@@ -1,7 +1,7 @@
 const banner = {
   render() {
     return `
-        <img src="./images/banner.png" alt="" class="w-max">
+        <img src="https://caodang.fpt.edu.vn/wp-content/uploads/Banner-PC-1.png" alt="" class="w-max">
         `
   },
 };
