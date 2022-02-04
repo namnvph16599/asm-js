@@ -1,24 +1,26 @@
-import data from "../data";
+import { getAll } from "../api/post";
 const newsLists = {
-  render() {
-    return `
-        <h3 class="font-bold text-[#272f54] text-xl my-4">TIN TỨC HỌC TẬP</h3>
-        <div class="grid grid-cols-3 gap-3">
-        ${data
-          .map((post) => {
-            return `
-            <div class="border border-solid border-[#ccc] pt-3 px-5 py-5">
-            <a href="/news/${post.id}">
-            <img src="${post.img}" alt="">
-          </a>
-            <a href="/news/${post.id}" class="text-[#ca7802] font-bold text-lg">${post.title}</a>
-            <p class="text-base">${post.desc}
-            </p>
-        </div>
-            `;
-          })
-          .join("")}
-           
+  async render() {
+    // Chờ thằng axios.get truy cập API và lấy dữ liệu,
+    // lấy dữ liệu xong sẽ trả về và gán vào biến response
+    const { data } = await getAll(); //sử dụng destructorring để lấy ra data
+
+    return /* html */ `
+        <h2 class="font-semibold text-2xl uppercase text-blue-800 my-4">Tin tức học tập</h2>
+        <div class="grid grid-cols-3 gap-8">
+            ${data
+              .map(
+                (post) => `
+                <div class="border p-4">
+                    <a href="/news/${post.id}">
+                        <img src="${post.img}" alt="" />
+                    </a>
+                    <h3 class="my-3"><a  href="/news/${post.id}" class="font-semibold text-lg text-orange-500">${post.title}</a></h3>                    
+                    <p>${post.desc}</p>
+                </div>
+            `
+              )
+              .join("")}
         </div>
         `;
   },

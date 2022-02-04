@@ -11,39 +11,40 @@ import newsEdit from "./pages/admin/news/edit.js";
 
 const router = new Navigo("/", { linksSelector: "a" });
 
-const print = (content) => {
-  document.getElementById("app").innerHTML = content;
+const print = async (content, id) => {
+  document.getElementById("app").innerHTML = await content.render(id);
+  if (content.afterRender) content.afterRender(id);
 };
 router.on({
   "/": () => {
-    print(homePage.render());
+    print(homePage);
   },
   "/about": () => {
     print("About page");
   },
   "/news": () => {
-    print(newsPages.render());
+    print(newsPages);
   },
   "/news/:id": (value) => {
-    print(detailPage.render(value.data.id));
+    print(detailPage, value.data.id);
   },
   "/signup": () => {
-    print(signupPage.render());
+    print(signupPage);
   },
   "/signin": () => {
-    print(signinPage.render());
+    print(signinPage);
   },
   "/admin/dashboard": () => {
-    print(dashboardPage.render());
+    print(dashboardPage);
   },
   "/admin/news": () => {
-    print(newsAdmin.render());
+    print(newsAdmin);
   },
   "/admin/news/add": () => {
-    print(newsAdd.render());
+    print(newsAdd);
   },
-  "/admin/news/edit": () => {
-    print(newsEdit.render());
+  "/admin/news/:id/edit": ({data}) => {
+    print(newsEdit, data.id);
   },
 });
 router.resolve();

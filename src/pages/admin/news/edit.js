@@ -1,6 +1,11 @@
+import { get } from "../../../api/post";
+import { update } from "../../../api/post";
+
+
 const newsEdit = {
-    render() {
-      return /*html*/ `
+  async render(id) {
+    const { data } = await get(id);
+    return /*html*/ `
                   <div class="min-h-full">
             <nav class="bg-gray-800">
               <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -142,7 +147,7 @@ const newsEdit = {
               <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
               <div class="md:grid md:grid-cols-3 md:gap-6">
               <div class="mt-5 md:mt-0 md:col-span-3">
-                <form action="#" method="POST">
+                <form action="#" method="POST" id="post-news-edit">
                   <div class="shadow sm:rounded-md sm:overflow-hidden">
                     <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
                       <div class="grid grid-cols-3 gap-6">
@@ -151,7 +156,7 @@ const newsEdit = {
                             Title
                           </label>
                           <div class="mt-1">
-                            <input type="text" name="company-website" id="company-website" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder="">
+                            <input type="text" value="${data.title}" name="company-website" id="company-website" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder="">
                           </div>
                         </div>
                       </div>
@@ -161,7 +166,7 @@ const newsEdit = {
                           Description
                         </label>
                         <div class="mt-1">
-                          <textarea id="about" name="about" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder=""></textarea>
+                          <textarea id="about" value="${data.desc}" name="about" rows="3" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md" placeholder="">${data.desc}</textarea>
                         </div>
                       </div>
           
@@ -208,7 +213,25 @@ const newsEdit = {
               </div>
             </main>
                   `;
-    },
-  };
-  export default newsEdit;
-  
+  },
+  afterRender(id) {
+    const formEdit = document.getElementById("post-news-edit");
+    formEdit.addEventListener("submit", (e) => {
+      e.preventDefault(); //ngăn chặn sự kiên reload lại trang
+      const postFake = {
+        id ,
+        title: document.getElementById("company-website").value,
+        img: "https://picsum.photos/200/200",
+        desc: document.getElementById("about").value,
+      };
+      update(postFake)
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  },
+};
+export default newsEdit;

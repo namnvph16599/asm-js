@@ -1,6 +1,8 @@
+import { add } from "../../../api/post";
+
 const newsAdd = {
-    render() {
-      return /*html*/ `
+  render() {
+    return /*html*/ `
                   <div class="min-h-full">
             <nav class="bg-gray-800">
               <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -186,7 +188,7 @@ const newsAdd = {
               <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
               <div class="md:grid md:grid-cols-3 md:gap-6">
               <div class="mt-5 md:mt-0 md:col-span-3">
-                <form action="#" method="POST">
+                <form action="" id="form-add-post" method="POST">
                   <div class="shadow sm:rounded-md sm:overflow-hidden">
                     <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
                       <div class="grid grid-cols-3 gap-6">
@@ -252,8 +254,25 @@ const newsAdd = {
               </div>
             </main>
                   `;
-    },
-  };
-  
-  export default newsAdd;
-  
+  },
+  afterRender() {
+    const fromAdd = document.getElementById("form-add-post");
+    fromAdd.addEventListener("submit", (e) => {
+      e.preventDefault(); //ngăn chặn sự kiên reload lại trang
+      const postFake = {
+        title: document.getElementById("company-website").value,
+        img: "https://picsum.photos/200/200",
+        desc: document.getElementById("about").value,
+      };
+      add(postFake)
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  },
+};
+
+export default newsAdd;

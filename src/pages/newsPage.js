@@ -3,10 +3,10 @@ import header from "../components/header";
 import footer from "../components/footer";
 
 const newsPages = {
-  render() {
+ async render() {
     return `
         ${header.render()}
-        ${newsLists.render()}
+        ${await newsLists.render()}
        ${footer.render()}
 
         `;
