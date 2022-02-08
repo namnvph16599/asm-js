@@ -1,5 +1,5 @@
 import { add } from "../../../api/post";
-
+import axios from "axios";
 const newsAdd = {
   render() {
     return /*html*/ `
@@ -257,21 +257,58 @@ const newsAdd = {
   },
   afterRender() {
     const fromAdd = document.getElementById("form-add-post");
-    fromAdd.addEventListener("submit", (e) => {
-      e.preventDefault(); //ngăn chặn sự kiên reload lại trang
-      const postFake = {
-        title: document.getElementById("company-website").value,
-        img: "https://picsum.photos/200/200",
-        desc: document.getElementById("about").value,
-      };
-      add(postFake)
-        .then((result) => {
-          console.log(result);
+    const imgPost = document.getElementById("file-upload");
+    imgPost.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "ecma_asm");
+
+      axios({
+        url: "https://api.cloudinary.com/v1_1/vannam042/image/upload",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-formendcoded",
+        },
+        data: formData,
+      })
+        .then((response) => {
+          // console.log(response.data.secure_url);
+          fromAdd.addEventListener("submit", (e) => {
+            e.preventDefault(); //ngăn chặn sự kiên reload lại trang
+            const postFake = {
+              title: document.getElementById("company-website").value,
+              img: response.data.secure_url,
+              desc: document.getElementById("about").value,
+            };
+            add(postFake)
+              .then((result) => {
+                console.log(result);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          });
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          console.log(error);
         });
     });
+    // fromAdd.addEventListener("submit", (e) => {
+    //   e.preventDefault(); //ngăn chặn sự kiên reload lại trang
+    //   const postFake = {
+    //     title: document.getElementById("company-website").value,
+    //     img: "https://picsum.photos/200/200",
+    //     desc: document.getElementById("about").value,
+    //   };
+    //   add(postFake)
+    //     .then((result) => {
+    //       console.log(result);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // });
   },
 };
 

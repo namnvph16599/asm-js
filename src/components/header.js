@@ -10,7 +10,7 @@ const header = {
                     <li class="inline-block"><a href="/about" class="pl-12 text-base hover:underline text-white">About</a>
                     </li>
                     <li class="inline-block"><a href="/news" class="pl-12 text-base hover:underline text-white">News</a></li>
-                    <li class="inline-block"><a href="" class="pl-12 text-base hover:underline text-white">Contact</a>
+                    <li class="inline-block"><a href="/news" class="pl-12 text-base hover:underline text-white">Contact</a>
                     </li>
                 </ul>
                 <form action="" class="pr-3">
